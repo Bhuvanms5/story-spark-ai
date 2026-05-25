@@ -4,7 +4,7 @@ import { formatDateShort } from "../../../utils/time-formate";
 import LoadingAnimation from "../../loading/loading.component";
 import SSProfile from "../../ui-component/ss-profile/ss-profile";
 import { useNavigate } from "react-router-dom";
-import BookmarkButton from "../../BookmarkButton"; // Import the core bookmark module
+import BookmarkButton from "../../BookmarkButton";
 
 import {
   FaTwitter,
@@ -16,7 +16,6 @@ const FeatureComponent = () => {
   const { data, isLoading } = useGetFeaturedListsQuery(undefined);
   const navigate = useNavigate();
 
-  // Dynamic reading calculation logic
   const calculateReadingTime = (content: string): number => {
     if (!content) return 1;
     const words = content.trim().split(/\s+/).length;
@@ -28,12 +27,12 @@ const FeatureComponent = () => {
   }
 
   return (
-    <div className="mb-12 text-slate-100">
-      <h2 className="text-2xl font-bold text-slate-100 mb-6">
+    <section className="mb-12 text-slate-100">
+      <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-50 sm:text-3xl">
         Featured Posts
       </h2>
 
-      <div className="grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2 lg:gap-6">
         {(data?.posts?.length ?? 0) > 0 ? (
           data?.posts?.map((post: Post) => {
             const postUrl = `${window.location.origin}/post/${post._id}`;
@@ -42,9 +41,9 @@ const FeatureComponent = () => {
               <div
                 key={post._id}
                 onClick={() => navigate(`/post/${post._id}`)}
-                className="motion-card h-full bg-blue-500/10 rounded-lg shadow-sm overflow-hidden border border-slate-700/40 cursor-pointer hover:bg-blue-500/20 hover:border-blue-400/30 flex flex-col group"
+                className="motion-card story-panel group flex h-full cursor-pointer flex-col overflow-hidden rounded-lg hover:border-blue-400/35"
               >
-                <div className="relative overflow-hidden h-48">
+                <div className="relative h-48 overflow-hidden sm:h-52">
                   <img
                     className="motion-image h-full w-full object-cover"
                     src={post.imageURL}
@@ -52,69 +51,67 @@ const FeatureComponent = () => {
                   />
                 </div>
 
-                <div className="p-6 flex-1 flex flex-col justify-between">
+                <div className="flex flex-1 flex-col justify-between p-5 sm:p-6">
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center">
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <div className="flex min-w-0 items-center">
                         <SSProfile
                           name={post.author?.name || "Unknown User"}
                           size="h-8 w-8"
                         />
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-400">
+                        <div className="ml-3 min-w-0">
+                          <p className="truncate text-sm font-semibold text-slate-300">
                             {post.author?.name || "Unknown User"}
                           </p>
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <p className="text-xs text-gray-500">
+                          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <p className="text-xs text-slate-500">
                               {formatDateShort(post.createdAt)}
                             </p>
-                            <span className="text-gray-600 text-xs">•</span>
-                            {/* ⏱️ Dynamic Reading Time Badging */}
-                            <p className="text-xs text-purple-400 font-medium">
-                              ⏱️ {calculateReadingTime(post.content)} min read
+                            <span className="text-xs text-slate-600">•</span>
+                            <p className="text-xs font-medium text-indigo-300">
+                              {calculateReadingTime(post.content)} min read
                             </p>
                           </div>
                         </div>
                       </div>
 
-                      {/* 🔖 Bookmark flag widget with redirection shield */}
                       <div onClick={(e) => e.stopPropagation()} className="relative z-10">
                         <BookmarkButton
                           storyId={post._id}
                           bookmarks={post.bookmarks}
-                          className="p-1.5 rounded-full hover:bg-slate-700/40 text-slate-400 hover:text-purple-400 transition-colors"
+                          className="rounded-full p-1.5 text-slate-400 transition-colors hover:bg-slate-700/40 hover:text-purple-300"
                         />
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-semibold text-gray-300 mb-2 group-hover:text-blue-400 transition-colors">
+                    <h3 className="mb-2 text-xl font-bold leading-snug text-slate-100 transition-colors group-hover:text-blue-300">
                       {post.title}
                     </h3>
 
-                    <p className="text-gray-400 mb-4 line-clamp-2">
+                    <p className="mb-5 line-clamp-2 leading-relaxed text-slate-400">
                       {post.content || ""}
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-slate-700 pt-4 text-sm text-gray-500 mt-auto">
-                    <div className="flex items-center">
-                      <span className="flex items-center mr-4">
-                        <i className="far fa-heart mr-1"></i>
+                  <div className="mt-auto flex flex-col gap-4 border-t border-slate-700/70 pt-4 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center gap-1">
+                        <i className="far fa-heart"></i>
                         {post.likesCount ?? 0}
                       </span>
-                      <span className="flex items-center">
-                        <i className="far fa-comment mr-1"></i>
+                      <span className="flex items-center gap-1">
+                        <i className="far fa-comment"></i>
                         {post.commentsCount ?? 0}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-4 text-gray-400">
+                    <div className="flex items-center gap-4 text-slate-400">
                       <a
                         href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}&text=${encodeURIComponent(post.title || "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         title="Share on Twitter"
-                        className="motion-icon hover:text-sky-400 hover:-translate-y-0.5"
+                        className="motion-icon hover:-translate-y-0.5 hover:text-sky-400"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <FaTwitter size={16} />
@@ -125,7 +122,7 @@ const FeatureComponent = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         title="Share on LinkedIn"
-                        className="motion-icon hover:text-blue-500 hover:-translate-y-0.5"
+                        className="motion-icon hover:-translate-y-0.5 hover:text-blue-500"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <FaLinkedin size={16} />
@@ -134,7 +131,7 @@ const FeatureComponent = () => {
                       <a
                         href={`mailto:?subject=${encodeURIComponent(post.title || "")}&body=${encodeURIComponent(`${(post.content || "").slice(0, 120)}...\n\nRead more: ${postUrl}`)}`}
                         title="Share via Email"
-                        className="motion-icon hover:text-red-400 hover:-translate-y-0.5"
+                        className="motion-icon hover:-translate-y-0.5 hover:text-red-400"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <FaEnvelope size={16} />
@@ -146,12 +143,12 @@ const FeatureComponent = () => {
             );
           })
         ) : (
-          <div className="rounded-lg border border-slate-700/70 bg-slate-900/40 px-4 py-5 text-slate-300">
-            Feature Post is not available!
+          <div className="story-panel rounded-lg px-4 py-5 text-slate-300">
+            Featured posts are not available.
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

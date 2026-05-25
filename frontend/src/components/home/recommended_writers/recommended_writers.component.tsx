@@ -39,30 +39,30 @@ const RecommendedWritersComponent = () => {
 
   return (
     <>
-      <section className="bg-blue-500/10 rounded-lg shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-300 mb-4">
+      <section className="story-panel rounded-lg p-5 sm:p-6">
+        <h3 className="mb-5 text-lg font-bold tracking-tight text-slate-100">
           Recommended Writers
         </h3>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {recommendedWriters.map((writer, index) => (
             <div
               key={index}
-              className="flex items-center justify-between"
+              className="flex items-center justify-between gap-3 rounded-lg border border-slate-700/40 bg-slate-950/20 p-3"
             >
-              <div className="flex items-center">
+              <div className="flex min-w-0 items-center">
                 <img
-                  className="h-10 w-10 rounded-full"
+                  className="h-10 w-10 shrink-0 rounded-full object-cover ring-2 ring-blue-400/20"
                   src={writer.image}
                   alt={writer.name}
                 />
 
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-400">
+                <div className="ml-3 min-w-0">
+                  <p className="truncate text-sm font-semibold text-slate-300">
                     {writer.name}
                   </p>
 
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-500">
                     {writer.role}
                   </p>
                 </div>
@@ -70,7 +70,7 @@ const RecommendedWritersComponent = () => {
 
               <button
                 onClick={() => toggleFollow(index)}
-                className="!rounded-button text-indigo-600 text-sm font-medium hover:text-indigo-700 cursor-pointer"
+                className="motion-cta shrink-0 rounded-full border border-indigo-400/25 bg-indigo-500/10 px-3 py-1.5 text-sm font-semibold text-indigo-200 hover:border-indigo-300/50 hover:bg-indigo-500/20 hover:text-white"
               >
                 {following.includes(index) ? "Following" : "Follow"}
               </button>
