@@ -41,8 +41,8 @@ return(
   <section className="max-w-7xl mx-auto px-6 py-20" ref={contributorsRef}>
 <div className="p-12 bg-white/5 rounded-3xl border border-white/10">
   <div className="text-center mb-16">
-    <h2 className="text-3xl font-bold mb-4">Our GitHub Contributors Community </h2>
-    <p className="text-gray-400">Meet the pioneers of AI-assisted storytelling.</p>
+    <h2 className="text-3xl font-bold mb-4">Our GitHub Community </h2>
+    <p className="text-gray-400">Powered by amazing contributors</p>
   </div>
   
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
