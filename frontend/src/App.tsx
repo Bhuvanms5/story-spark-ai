@@ -38,7 +38,6 @@ import ProfileComponent from "./components/dashboard/profile/profile.component";
 import PaymentComponent from "./components/home/pricing/payment.component";
 import Contact from "./components/contactus/contactus";
 import HelpCenterComponent from "./components/help_center/help_center.component";
-import AnalyticsPage from "./components/dashboard/analytics/analytics.page";
 import AboutUsComponent from "./components/footer/about-us.tsx";
 import CareerComponent from "./components/footer/career.tsx";
 // import ContactUsComponent from "./components/footer/contact-us.tsx";
@@ -53,6 +52,8 @@ import ResourcesListComponent from "./components/community/resources_list.compon
 import ResourceDetailComponent from "./components/community/resource_detail.component";
 import MagicCursorComponent from "./components/magic-cursor/magic_cursor.component";
 import ContributorsComponent from "./components/footer/contributors";
+import ReportBug from "./components/report-bug/ReportBug";
+
 
 const ProtectedRoute = ({
   element,
@@ -141,21 +142,6 @@ function App() {
           />
 
           <Route
-            path="analytics"
-            element={
-              <ProtectedRoute
-                element={<AnalyticsPage />}
-                allowedRoles={[
-                  USER_ROLE.USER,
-                  USER_ROLE.ADMIN,
-                  USER_ROLE.SUPER_ADMIN,
-                  USER_ROLE.WRITER,
-                ]}
-              />
-            }
-          />
-
-          <Route
             path="post-lists"
             element={
               <ProtectedRoute
@@ -169,7 +155,6 @@ function App() {
               />
             }
           />
-
 
           <Route
             path="settings"
@@ -460,6 +445,15 @@ function App() {
             </RootLayout>
           }
         />
+        <Route
+          path="/report-bug"
+          element={
+            <RootLayout>
+              <ReportBug />
+            </RootLayout>
+          }
+        />
+
         <Route path="/analytics" element={<AnalyticsDashboard />} />
         <Route path="/collab" element={<CollabHome />} />
         <Route path="/collab/:roomId" element={<CollabRoom />} />
