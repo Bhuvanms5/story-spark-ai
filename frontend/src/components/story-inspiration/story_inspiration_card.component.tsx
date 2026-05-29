@@ -94,11 +94,10 @@ const StoryInspirationCard: React.FC<
       icon: "fas fa-book",
     };
 
-  const handleGenerateSimilar = () => {
-    const selectedPrompt =
-      prompts[selectedPromptIdx];
+  const getFinalPrompt = () => {
+    const selectedPrompt = prompts[selectedPromptIdx];
 
-    const finalPrompt = `
+    return `
       [Genre: ${genre}]
       Write a creative story inspired by
       '${title}' by ${author}.
@@ -107,14 +106,40 @@ const StoryInspirationCard: React.FC<
       Premise:
       ${selectedPrompt}
     `;
+  };
 
+  const handleNavigateToStory = () => {
     navigate("/stories", {
-      state: { prompt: finalPrompt },
+      state: {
+        prompt: getFinalPrompt(),
+        storyId: id,
+        storyTitle: title,
+      },
     });
+  };
+
+  const handleGenerateSimilar = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation();
+    handleNavigateToStory();
+  };
+
+  const handleCardKeyDown = (
+    event: React.KeyboardEvent<HTMLDivElement>
+  ) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleNavigateToStory();
+    }
   };
 
   return (
     <motion.div
+      role="button"
+      tabIndex={0}
+      onClick={handleNavigateToStory}
+      onKeyDown={handleCardKeyDown}
       whileHover={{ y: -8 }}
       transition={{ duration: 0.35 }}
       className="
@@ -125,10 +150,17 @@ const StoryInspirationCard: React.FC<
         shadow-[0_10px_40px_rgba(0,0,0,0.06)]
         hover:shadow-[0_25px_80px_rgba(99,102,241,0.15)]
         transition-all duration-500
+        cursor-pointer
+        hover:-translate-y-1
+        focus:outline-none
+        focus-visible:ring-2 focus-visible:ring-indigo-500
+        focus-visible:ring-offset-2 focus-visible:ring-offset-white
         dark:bg-[#0F172A]/80
         dark:border-white/10
+        dark:focus-visible:ring-offset-slate-900
         backdrop-blur-xl
       "
+      aria-label={`View inspiration from ${title}`}
     >
       {/* Hover Glow */}
       <div
@@ -216,8 +248,8 @@ const StoryInspirationCard: React.FC<
         <p
           className="
             text-[15px] leading-7
-            text-slate-600
-            dark:text-slate-400
+            text-slate-700
+            dark:text-slate-300
           "
         >
           {summary}
@@ -229,7 +261,7 @@ const StoryInspirationCard: React.FC<
             className="
               text-xs uppercase tracking-[0.25em]
               font-bold mb-3
-              text-slate-500 dark:text-slate-500
+              text-slate-500 dark:text-slate-400
             "
           >
             Themes
@@ -279,9 +311,11 @@ const StoryInspirationCard: React.FC<
               return (
                 <button
                   key={i}
-                  onClick={() =>
-                    setSelectedPromptIdx(i)
-                  }
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setSelectedPromptIdx(i);
+                  }}
+                  type="button"
                   className={`
                     group/prompt relative w-full
                     text-left rounded-2xl
@@ -317,7 +351,7 @@ const StoryInspirationCard: React.FC<
                               bg-slate-200
                               text-slate-700
                               dark:bg-white/10
-                              dark:text-slate-400
+                              dark:text-slate-300
                             `
                         }
                       `}
@@ -331,7 +365,7 @@ const StoryInspirationCard: React.FC<
                         ${
                           active
                             ? "text-slate-900 dark:text-white"
-                            : "text-slate-600 dark:text-slate-400"
+                            : "text-slate-700 dark:text-slate-300"
                         }
                       `}
                     >
@@ -347,6 +381,7 @@ const StoryInspirationCard: React.FC<
         {/* CTA */}
         <button
           onClick={handleGenerateSimilar}
+          type="button"
           className={`
             mt-8 w-full
             rounded-2xl py-4
